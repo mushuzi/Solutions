@@ -1,0 +1,41 @@
+/**
+*LZS
+*Solution290:给定字符串pattern和str，判断str是否遵循pattern规定的模式，其中str是由若干Word组成的
+*
+*示例：pattern = "abba", str = "dog cat cat dog" should return true.
+*示例：pattern = "abba", str = "dog cat cat fish" should return false.
+*
+*思路：类似于205题的解题思路
+*	1.既然是以词为单位，先将str以空格分开（split方法），转化成字符串数组words
+*	2.以pattern中的字符为键，以words中的词为值，组成键值对存储到map中
+*	3.如果当前字符pattern.charAt(i)在map中已经包含，则判断words[i]是否和map中对应的值相等，若不等，则返回false
+*	4.如果当前的pattern.charAt(i)在map中没有包含，但是words[i]却包含，则返回false
+*	5.最后返回true
+*
+*注：3中排出了pattern="aa", str="dog cat"的情况；
+	 4中排除了pattern="ab", str="dog dog"的情况；
+**/
+
+public class Solution {
+    public boolean wordPattern(String pattern, String str) {
+        
+        String[] words=str.split(" ");
+        if(pattern.length()!=words.length)  return false;
+        
+        Map<Character,String> map=new HashMap<>();
+        
+        for(int i=0;i<pattern.length();i++){
+            if(map.containsKey(pattern.charAt(i))){
+                if(!map.get(pattern.charAt(i)).equals(words[i]))   return false;
+            }
+            else if(map.containsValue(words[i])){
+                return false;
+            }
+            else
+                map.put(pattern.charAt(i),words[i]);
+        }
+        return true;
+    }
+}
+	 
+

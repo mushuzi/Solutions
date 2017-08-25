@@ -1,0 +1,43 @@
+/**
+*LZS
+*Soluion438:给定一个字符串s和非空字符串p，找到所有满足与p有相同种类和数量的字符组成的s的子串的开始索引，并以链表的形式返回
+*
+*示例：input:s="cbaebabacd" p:"abc		output:[0,6]
+*解释：
+*	The substring with start index = 0 is "cba", which is an anagram of "abc".
+*	The substring with start index = 6 is "bac", which is an anagram of "abc".
+*
+*思路：将s字符串切割成一个个与p等长的子串cur，然后比较每个子串cur和p是否满足“相同种类和数量”的条件
+*	1.为了方便理解，将比较子串cur和p是否满足限制条件的部分专门写成一个函数helper，返回值是布尔类型
+*	2.helper函数的具体实现不再详述，可以使用map实现，也可以使用数组实现，在之前已经有多次应用
+*	3.每次将s切割成与p等长的子串cur，然后将cur和p作为输入参数，利用helper函数判断，若返回值是true，则将当前的索引添加进链表中
+*
+*注：该方法很好理解，但是效率不太高。网上给的滑动窗口法太难理解了，sad！
+**/
+
+public class Solution {
+    public List<Integer> findAnagrams(String s, String p) {
+        if(s==null || s.length()<p.length()) return new ArrayList<>();
+        
+        List<Integer> res=new ArrayList<>();
+        
+        for(int i=0;i<s.length()-p.length()+1;i++){
+            String cur=s.substring(i,i+p.length());
+            if(helper(cur,p))   res.add(i);
+        }
+        return res;
+    }
+    
+    //helper函数用来判断两个等长字符串是否包含同样种类和数量的字符
+    public boolean helper(String s, String t){
+        int[] count=new int[26];
+        for(int i=0;i<s.length();i++){
+            count[s.charAt(i)-'a']++;
+            count[t.charAt(i)-'a']--;
+        }
+        for(int item:count){
+            if(item!=0) return false;
+        }
+        return true;
+    }
+}

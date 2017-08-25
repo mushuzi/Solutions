@@ -1,0 +1,62 @@
+/**
+*LZS
+*Solution205:给定两个等长的字符串，判断这两个字符串是否同构。
+*
+*示例：input：s="egg",t="add" output:true
+		input：s="foo",t="bar"	output:false;
+		input：s="paper",t="title"	output:true;
+*
+*分析：本题的关键是对重复出现的元素的处理，需要判断两个字符串中重复出现的元素位置是否是相同的
+*
+*思路1：使用map解决（效率较低）。
+*	1.每次对于索引i，将s.charAt(i)和t.charAt(i)组成键值对存入map中
+*	2.判断键s.charAt(i)是否已经存在在map中，如果存在，则判断map中已存的该键对应的值和即将存入的
+*		t.charAt(i)是否相等，若不相等，则说明两个字符串一定不同构返回false，若相等，则当前满足同构的条件。
+*		注：第2步排除的是s="aa", t="ab"的情况
+*	3.判断值t.charAt(i)是否已经存在于map中，如果存在，则需要判断map中已存的该值对应的键是否与s.charAt(i)
+*		相等，如果不相等，则说明两个字符串一定不同构，返回false，若相等，则当前满足同构的条件。
+*		注：第3步排除的是s="ab", t="aa"的情况
+*	4.判断完所有位上的元素后如果程序还没有终止，则说明两个字符串一定同构，返回true
+*
+*思路2：使用数组标记的方式解决（效率较高）。
+*	1.声明两个长度为256（字符型是一个字节，最多256中）的整型数组flags和flagt，分别用来标记每个元素。
+*	2.按照相同的方式进行标记：将flags中的第s.charAt(i)个位置置为i+1；将flagt中的第t.charAt(i)个元素置为i+1;
+*	3.判断flags[s.charAt(i)]和flagt[t.charAt(i)]是否相等，若不相等，则一定不同构，返回false
+*	4.若所有字符都满足2所示的条件，则返回true
+**/
+
+//思路1：使用map解决（效率较低）。
+public class Solution {
+    public boolean isIsomorphic(String s, String t) {
+        Map<Character,Character> map=new HashMap<>();
+        for(int i=0;i<s.length();i++){
+            if(map.containsKey(s.charAt(i))){
+                if(map.get(s.charAt(i))!=t.charAt(i))    return false;
+            }
+            else if(!map.containsValue(t.charAt(i)))
+                map.put(s.charAt(i),t.charAt(i));
+            else
+                return false;
+                
+        }
+        return true;        
+    }
+}
+
+//思路2：使用数组标记的方式解决（效率较高）。
+public class Solution {
+    public boolean isIsomorphic(String s, String t) {
+        int[] flags=new int[256];
+        int[] flagt=new int[256];
+        
+        for(int i=0;i<s.length();i++){
+            if(flags[s.charAt(i)]!=flagt[t.charAt(i)])  return false;
+            flags[s.charAt(i)]=i+1;
+            flagt[t.charAt(i)]=i+1;
+            
+            
+        }
+        return true;
+    }
+}
+

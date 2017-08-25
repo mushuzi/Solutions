@@ -1,0 +1,30 @@
+/**
+*LZS
+*Sloution242:判断给定的两个字符串是否是由相同的字母颠倒顺序而来。
+*		例如s="anagram",t="nagaram"，返回的是true；s="rat",t="car",返回的是false；
+*
+*思路（时间复杂度O(n)）：
+*	1.构造一个包含26个位置的字母表int数组，每个位置对应一个字母，第0个位置对应‘a',第25个位置对应’z'
+*	2.遍历s字符串，出现哪个字母，就在该字母对应的位置上将原来值加一；
+*	3.遍历t字符串，出现哪个字母 ，就在该字母对应的位置上将原来值减一。
+*	4.判断数组中的元素，如果存在非零元素，则s和t必不满足条件，如果不存在非零元素，则返回true。
+**/
+
+public class Solution242 {
+    public static boolean isAnagram(String s, String t) {
+		if(s.length()!=t.length())  return false;
+	
+        int[] alp=new int[26];
+        
+        for(int i=0;i<s.length();i++)
+            alp[s.charAt(i)-'a']++;
+        
+        for(int i=0;i<s.length();i++)
+            alp[t.charAt(i)-'a']--;
+        
+        for(int i:alp){
+            if(i!=0)    return false;
+        }
+        return true;
+    }
+}

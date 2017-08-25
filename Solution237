@@ -1,0 +1,22 @@
+/**
+*LZS
+*Solution237:从单向链表中删除给定的节点。
+*
+*思路：这道题是简单的链表节点删除，但是由于不知道被删除节点的前一个节点，所以不能直接删除给定
+*	节点，所以解决办法是将被删除节点的下一个节点拷贝到被删除节点，然后删除下一个节点。
+**/
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public void deleteNode(ListNode node) {
+        node.val=node.next.val;
+        node.next=node.next.next;
+    }
+}

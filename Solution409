@@ -1,0 +1,34 @@
+/**
+*LZS
+*Solution409:给定一个可能同时包含大小字母和小写字母的字符串，寻找最长的回文，返回其长度。
+*例如：输入“abccccdd”，输出为7，因为可以构造最长回文“dccaccd”，长度为7。
+*
+*思路：
+*	1.构造一个长度为62的字母表alph，对应从A~Z和a~z的62个字母，A~Z对应字母表的第0~25个位置，a~z对应字母表的第26~61个位置。
+*	2.遍历数组s，将每个字母映射到对应的位置上去，字母每出现一次，对应位置上的数加一
+*		位置的映射：从A~Z：s.charAt(i)-'A';从a~z：s.charAt(i)-'A'-6
+*		字母大小写的判断：'a'=97，'A'=65,其余字母以此类推。
+*	3.判断alph的每个位置上的元素，如果是偶数，则累加，如果是3以上的奇数，则减一累加
+*	4.对于所有为1的位置，只需要一次加一，因此最后以count==s.length()进行一个判断。
+**/
+
+public class Solution {
+    public int longestPalindrome(String s) {
+        
+        if(s==null || s.length()==0)    return 0;
+        int[] alph=new int[26*2];
+        int count=0;
+        
+        for(int i=0;i<s.length();i++){
+            if(s.charAt(i)>=97)  alph[s.charAt(i)-'A'-6]++;
+            else
+                alph[s.charAt(i)-'A']++;
+        }
+            
+        
+        for(int i:alph){
+            if(i/2!=0)  count+=(i/2)*2;
+        }
+        return (count==s.length())?count:count+1;
+    }
+}
